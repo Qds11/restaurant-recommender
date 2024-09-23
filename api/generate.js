@@ -19,8 +19,12 @@ async function getRestaurantReviews(place) {
 
   const data = await response.json();
 
-  if (data.result?.reviews) return null
+  // Check if result or reviews are missing, and return null in that case
+  if (!data.result || !data.result.reviews) {
+    return null; // Return null if there's no result or no reviews
+  }
 
+  // If reviews exist, format them into a string
   return (
     `Restaurant: ${place.name}\n\n` +
     data.result.reviews
@@ -31,7 +35,6 @@ async function getRestaurantReviews(place) {
       .join("\n")
   );
 }
-
 export const config = {
   runtime: "edge",
 };
